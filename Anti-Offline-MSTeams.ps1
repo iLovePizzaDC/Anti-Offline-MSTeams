@@ -7,20 +7,42 @@ function setLayout() {
 
 	$newsize = $pswindow.buffersize
 	$newsize.height = 20
-	$newsize.width = 30
+	$newsize.width = 37
 	$pswindow.buffersize = $newsize
 
 	$newsize = $pswindow.windowsize
-	$newsize.height = 3
-	$newsize.width = 30
+	$newsize.height = 5
+	$newsize.width = 37
 	$pswindow.windowsize = $newsize
+}
+
+function checkForKeyPresses($output) {
+
+	if([Console]::KeyAvailable){
+			
+		$key = $Host.UI.RawUI.ReadKey()
+		
+		if ($key.Character -eq 'S') {
+			
+			break
+		}elseif($key.Character -eq 'P') {
+			
+			Clear-Host
+			
+			Write-Output $output
+			
+			timeout /t -1
+		}
+	}
 }
 
 function printMessages($output) {
 	
 	Clear-Host
 	
-	Write-Output "Strg + C to escape now"
+	Write-Output "Press 'S' to skip the timer"
+	Write-Output "Press 'P' to pause the timer"
+	Write-Output "Press 'Strg + C' to quit"
 	Write-Output $output
 }
 
@@ -42,6 +64,10 @@ function makeThings {
 	$durationInSeconds = [double] $userInput * 60
 
 	while ($counter -ne $durationInSeconds) {
+		
+		checkForKeyPresses($output)
+		
+		Write-Output $keyInfo
 
 		[double] $seconds = $durationInSeconds - $counter
 		$hours = $seconds / 3600
