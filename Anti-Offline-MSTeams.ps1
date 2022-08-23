@@ -1,5 +1,21 @@
 Add-Type -AssemblyName System.Windows.Forms
 
+function setLayout() {
+	
+	$pshost = get-host
+	$pswindow = $pshost.ui.rawui
+
+	$newsize = $pswindow.buffersize
+	$newsize.height = 20
+	$newsize.width = 30
+	$pswindow.buffersize = $newsize
+
+	$newsize = $pswindow.windowsize
+	$newsize.height = 3
+	$newsize.width = 30
+	$pswindow.windowsize = $newsize
+}
+
 function printMessages($output) {
 	
 	Clear-Host
@@ -17,6 +33,8 @@ function moveMouse() {
 }
 
 function makeThings {
+	
+	setLayout
 	
 	$userInput = Read-Host -Prompt "Enter duration in minutes"
 	$autoShutdown = Read-Host -Prompt "Autoshutdown after timer? [y/n]"
